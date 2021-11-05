@@ -41,7 +41,7 @@ const Register = () => {
                     <Grid item sx={{ mt: 8, boxShadow: 3, mx: 'auto' }} xs={12} md={6}>
                         <img style={{ width: "200px" }} src={logo} alt="" />
                         <Typography variant="body1" gutterBottom>
-                            Login
+                            Register
                         </Typography>
                         {!isLoading && <form onSubmit={handleLoginSubmit}>
                             <TextField

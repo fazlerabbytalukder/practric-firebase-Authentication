@@ -11,6 +11,7 @@ import useAuth from '../../../Hooks/useAuth';
 
 const Navigation = () => {
     const { user, logout } = useAuth();
+    console.log(user);
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -30,9 +31,12 @@ const Navigation = () => {
                     <Link to='/services'><Button color="inherit">Services</Button></Link>
                     {
                         user?.email ?
-                        <Button onClick={logout} color="inherit">Logout</Button>
-                        :
-                        <NavLink style={{textDecoration:"none", color:'white'}} to='/login'><Button color="inherit">Login</Button></NavLink>
+                            <>
+                                <Button style={{color:'black'}}>{user?.displayName}</Button>
+                                <Button onClick={logout} color="inherit">Logout</Button>
+                            </>
+                            :
+                            <NavLink style={{ textDecoration: "none", color: 'white' }} to='/login'><Button color="inherit">Login</Button></NavLink>
                     }
                 </Toolbar>
             </AppBar>
