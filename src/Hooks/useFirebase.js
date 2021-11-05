@@ -13,10 +13,12 @@ const useFirebase = () => {
 
 
     //new user register
-    const registerUser = (email, password) => {
+    const registerUser = (email, password,location, history) => {
         setIsLoading(true);
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
+                const destination = location?.state?.from || '/';
+                history.replace(destination);
                 setAuthError('');
             })
             .catch((error) => {

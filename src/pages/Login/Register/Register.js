@@ -1,12 +1,15 @@
 import { Alert, Button, CircularProgress, Container, Grid, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
 import useAuth from '../../../Hooks/useAuth';
 import googleLogo from '../../../images/google logo.png';
 import logo from '../../../images/logo.png';
 
 const Register = () => {
     const [loginData, SetLoginData] = useState({})
+
+    const location = useLocation();
+    const history = useHistory();
 
     const { user, registerUser, isLoading, authError } = useAuth();
 
@@ -27,7 +30,7 @@ const Register = () => {
             alert('your pass did not match');
             return;
         }
-        registerUser(loginData.email, loginData.password);
+        registerUser(loginData.email, loginData.password, location, history);
         // alert('hello')
         e.preventDefault();
     }
