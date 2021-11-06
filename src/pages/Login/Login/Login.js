@@ -7,7 +7,7 @@ import logo from '../../../images/logo.png';
 
 const Login = () => {
     const [loginData, SetLoginData] = useState({})
-    const { user, loginUser, isLoading, authError } = useAuth();
+    const { user, loginUser, isLoading, authError, signInWithGoogle } = useAuth();
 
     const location = useLocation();
     const history = useHistory();
@@ -26,6 +26,11 @@ const Login = () => {
         // alert('hello')
         loginUser(loginData.email, loginData.password, location, history)
         e.preventDefault();
+    }
+
+    //google sign in
+    const handleGoogleSignIn = () => {
+        signInWithGoogle(location,history)
     }
     return (
         <Container>
@@ -55,7 +60,7 @@ const Login = () => {
                             size="small" />
                         <Button variant="contained" sx={{ width: "75%", m: 1 }} type="submit">Login</Button> <br />
                         <Button sx={{my:2}} variant="text">--------------------- OR ---------------------</Button> <br />
-                        <Button sx={{ width: "75%", m: 1 }} variant="outlined"><img src={googleLogo} alt="" style={{width:'25px'}}/>  Sign In With Google</Button> <br />
+                        <Button onClick={handleGoogleSignIn} sx={{ width: "75%", m: 1 }} variant="outlined"><img src={googleLogo} alt="" style={{width:'25px'}}/>  Sign In With Google</Button> <br />
                         <NavLink style={{ textDecoration: 'none' }} to='/register'><Button sx={{my:2}} variant="text">New User? Please Register</Button></NavLink>
                     </form>
                     {isLoading && <CircularProgress />}

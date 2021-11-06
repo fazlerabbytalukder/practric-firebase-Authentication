@@ -8,7 +8,6 @@ import logo from '../../../images/logo.png';
 const Register = () => {
     const [loginData, SetLoginData] = useState({})
 
-    const location = useLocation();
     const history = useHistory();
 
     const { user, registerUser, isLoading, authError } = useAuth();
@@ -22,7 +21,7 @@ const Register = () => {
         const newLoginData = { ...loginData };
         newLoginData[field] = value;
 
-        // console.log(field,value,newLoginData);
+        // console.log(newLoginData);
         SetLoginData(newLoginData);
     }
     const handleLoginSubmit = e => {
@@ -30,7 +29,7 @@ const Register = () => {
             alert('your pass did not match');
             return;
         }
-        registerUser(loginData.email, loginData.password, location, history);
+        registerUser(loginData.email, loginData.password, loginData.name, history);
         // alert('hello')
         e.preventDefault();
     }
@@ -44,6 +43,15 @@ const Register = () => {
                             Register
                         </Typography>
                         {!isLoading && <form onSubmit={handleLoginSubmit}>
+                            <TextField
+                                sx={{ width: "75%", m: 1 }}
+                                name="name"
+                                type="text"
+                                onChange={handleOnChange}
+                                label="Your name"
+                                id="outlined-size-small"
+                                size="small"
+                            />
                             <TextField
                                 sx={{ width: "75%", m: 1 }}
                                 name="email"

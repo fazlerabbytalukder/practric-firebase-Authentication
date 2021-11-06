@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, updateProfile } from "firebase/auth";
 import initilizeFirebase from "../pages/Login/Firebase/firebase.init";
 
 initilizeFirebase();
@@ -11,20 +11,42 @@ const useFirebase = () => {
     const [authError, setAuthError] = useState('');
     const auth = getAuth();
 
+    //sign in with google
+    const googleProvider = new GoogleAuthProvider();
+
+    const signInWithGoogle = (location, history) => {
+        setIsLoading(true);
+        signInWithPopup(auth, googleProvider)
+            .then((result) => {
+                const user = result.user;
+                setAuthError('');
+            }).catch((error) => {
+                setAuthError(error.message);
+            })
+            .finally(() => setIsLoading(false));
+    }
+
 
     //new user register
-    const registerUser = (email, password,location, history) => {
+    const registerUser = (email, password, name, history) => {
         setIsLoading(true);
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                const destination = location?.state?.from || '/';
-                history.replace(destination);
                 setAuthError('');
+                const newUser = { email, displayName: name };
+                setUser(newUser);
+                //send name to firebase after creation
+                updateProfile(auth.currentUser, {
+                    displayName: name
+                }).then(() => {
+                }).catch((error) => {
+                });
+                history.replace('/')
             })
             .catch((error) => {
                 setAuthError(error.message);
             })
-            .finally(()=> setIsLoading(false));
+            .finally(() => setIsLoading(false));
     }
 
 
@@ -41,7 +63,7 @@ const useFirebase = () => {
             .catch((error) => {
                 setAuthError(error.message);
             })
-            .finally(()=> setIsLoading(false));
+            .finally(() => setIsLoading(false));
     }
 
 
@@ -68,7 +90,7 @@ const useFirebase = () => {
         }).catch((error) => {
             // An error happened.
         })
-        .finally(()=> setIsLoading(false));
+            .finally(() => setIsLoading(false));
     }
 
 
@@ -79,6 +101,7 @@ const useFirebase = () => {
         authError,
         loginUser,
         registerUser,
+        signInWithGoogle,
         logout,
     }
 }
