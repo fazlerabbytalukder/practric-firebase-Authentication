@@ -1,6 +1,6 @@
 import { Alert, Button, CircularProgress, Container, Grid, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import useAuth from '../../../Hooks/useAuth';
 import googleLogo from '../../../images/google logo.png';
 import logo from '../../../images/logo.png';
@@ -9,8 +9,9 @@ const Register = () => {
     const [loginData, SetLoginData] = useState({})
 
     const history = useHistory();
+    const location = useLocation();
 
-    const { user, registerUser, isLoading, authError } = useAuth();
+    const { user, registerUser, isLoading, authError, signInWithGoogle } = useAuth();
 
 
     const handleOnChange = e => {
@@ -33,6 +34,12 @@ const Register = () => {
         // alert('hello')
         e.preventDefault();
     }
+
+    //google sign in
+    const handleGoogleSignIn = () => {
+        signInWithGoogle(location,history)
+    }
+
     return (
         <>
             <Container>
@@ -79,7 +86,7 @@ const Register = () => {
                                 size="small" />
                             <Button variant="contained" sx={{ width: "75%", m: 1 }} type="submit">Register</Button> <br />
                             <Button sx={{ my: 2 }} variant="text">--------------------- OR ---------------------</Button> <br />
-                            <Button sx={{ width: "75%", m: 1 }} variant="outlined"><img src={googleLogo} alt="" style={{ width: '25px' }} />  Register With Google</Button> <br />
+                            <Button onClick={handleGoogleSignIn} sx={{ width: "75%", m: 1 }} variant="outlined"><img src={googleLogo} alt="" style={{ width: '25px' }} />  Sign In With Google</Button> <br />
                             <NavLink style={{ textDecoration: 'none' }} to='/login'><Button sx={{ my: 2 }} variant="text">Already User? Please Login</Button></NavLink>
                         </form>}
                         {isLoading && <CircularProgress />}
